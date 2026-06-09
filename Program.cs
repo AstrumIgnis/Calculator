@@ -1,3 +1,4 @@
+using System.Globalization;
 using Calculator.Core;
 using Calc = Calculator.Core.Calculator;
 
@@ -49,7 +50,8 @@ static void Evaluate(Calc calculator, string input)
         return;
     }
 
-    if (!double.TryParse(parts[0], out double a) || !double.TryParse(parts[2], out double b))
+    if (!double.TryParse(parts[0], NumberStyles.Any, CultureInfo.InvariantCulture, out double a) ||
+        !double.TryParse(parts[2], NumberStyles.Any, CultureInfo.InvariantCulture, out double b))
     {
         Console.WriteLine("Invalid numbers. Please enter valid numeric values.");
         return;
