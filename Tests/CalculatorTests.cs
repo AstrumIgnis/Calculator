@@ -187,4 +187,75 @@ public class CalculatorTests
         // Assert
         Assert.Equal(0, calculator.Result);
     }
+
+    /// <summary>
+    /// Tests that history is empty when the calculator is first created.
+    /// </summary>
+    [Fact]
+    public void History_IsEmptyOnNewCalculator()
+    {
+        var calculator = new CalcCore.Calculator();
+
+        Assert.Empty(calculator.History);
+    }
+
+    /// <summary>
+    /// Tests that an operation records a correct history entry.
+    /// </summary>
+    [Fact]
+    public void History_RecordsCorrectEntryAfterOperation()
+    {
+        // Arrange
+        var calculator = new CalcCore.Calculator();
+
+        // Act
+        calculator.Add(5, 3);
+
+        // Assert
+        Assert.Single(calculator.History);
+        var entry = calculator.History[0];
+        Assert.Equal(5, entry.A);
+        Assert.Equal(CalcCore.Operation.Add, entry.Op);
+        Assert.Equal(3, entry.B);
+        Assert.Equal(8, entry.Result);
+    }
+
+    /// <summary>
+    /// Tests that multiple operations each add an entry to history.
+    /// </summary>
+    [Fact]
+    public void History_AccumulatesEntriesAcrossOperations()
+    {
+        // Arrange
+        var calculator = new CalcCore.Calculator();
+
+        // Act
+        calculator.Add(5, 3);
+        calculator.Multiply(2, 4);
+        calculator.Subtract(10, 1);
+
+        // Assert
+        Assert.Equal(3, calculator.History.Count);
+        Assert.Equal(CalcCore.Operation.Add, calculator.History[0].Op);
+        Assert.Equal(CalcCore.Operation.Multiply, calculator.History[1].Op);
+        Assert.Equal(CalcCore.Operation.Subtract, calculator.History[2].Op);
+    }
+
+    /// <summary>
+    /// Tests that Reset clears the history alongside the result.
+    /// </summary>
+    [Fact]
+    public void Reset_ClearsHistory()
+    {
+        // Arrange
+        var calculator = new CalcCore.Calculator();
+        calculator.Add(5, 3);
+        calculator.Multiply(2, 4);
+
+        // Act
+        calculator.Reset();
+
+        // Assert
+        Assert.Empty(calculator.History);
+    }
 }

@@ -12,6 +12,11 @@ public class Calculator
     public double Result { get; private set; }
 
     /// <summary>
+    /// Gets the history of all operations performed since the last reset.
+    /// </summary>
+    public List<HistoryEntry> History { get; } = [];
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="Calculator"/> class.
     /// </summary>
     public Calculator()
@@ -28,6 +33,7 @@ public class Calculator
     public double Add(double a, double b)
     {
         Result = a + b;
+        History.Add(new HistoryEntry(a, Operation.Add, b, Result, DateTime.Now));
         return Result;
     }
 
@@ -40,6 +46,7 @@ public class Calculator
     public double Subtract(double a, double b)
     {
         Result = a - b;
+        History.Add(new HistoryEntry(a, Operation.Subtract, b, Result, DateTime.Now));
         return Result;
     }
 
@@ -52,6 +59,7 @@ public class Calculator
     public double Multiply(double a, double b)
     {
         Result = a * b;
+        History.Add(new HistoryEntry(a, Operation.Multiply, b, Result, DateTime.Now));
         return Result;
     }
 
@@ -70,14 +78,16 @@ public class Calculator
         }
 
         Result = a / b;
+        History.Add(new HistoryEntry(a, Operation.Divide, b, Result, DateTime.Now));
         return Result;
     }
 
     /// <summary>
-    /// Resets the calculator state, clearing the result.
+    /// Resets the calculator state, clearing the result and history.
     /// </summary>
     public void Reset()
     {
         Result = 0;
+        History.Clear();
     }
 }
